@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="PrismSelectTabRepro.Pages.LandingPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodels="clr-namespace:PrismSelectTabRepro.ViewModels"
+    Title="{Binding Title}"
+    x:DataType="viewmodels:LandingViewModel">
+
+    <VerticalStackLayout Padding="20" Spacing="20">
+        <VerticalStackLayout>
+            <Label Text="Select a tab?" />
+            <Switch IsToggled="{Binding SelectTab}" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout>
+            <Label Text="Pick selected tab" />
+            <Picker
+                Title="Pick Tab..."
+                ItemsSource="{Binding AvailableTabs}"
+                SelectedItem="{Binding SelectedTab}" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout>
+            <Label Text="Use dynamic navigation?" />
+            <Switch IsToggled="{Binding UseDynamicNavigation}" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout>
+            <Label Text="Navigate and apply all of the config above" />
+            <Button Command="{Binding NavigateCommand}" Text="Navigate With Config" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout>
+            <Label Text="Ignore the config above and navigate in the way you would expect to set the selected tab" />
+            <Button Command="{Binding ExpectedNavigationCommand}" Text="Expected Navigation" />
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+
+</ContentPage>
