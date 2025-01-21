@@ -10,3 +10,23 @@ Lack of public api available to set `AppThemeBinding` through code
 
 MCT issue:
 Using a `Setter` in code with an `AppThemeColor` does not apply colors correctly
+
+## Solution
+
+You need to call `GetBinding()` before passing the `AppThemeColor` to your setters, this will not be called automatically:
+
+```diff
+new VisualState()
+{
+    Name = "Normal",
+    Setters =
+    {
+        new Setter()
+        {
+            Property = Editor.TextColorProperty,
+-            Value = new AppThemeColor() { Light = Colors.White, Dark = Colors.Black},
++            Value = new AppThemeColor() { Light = Colors.White, Dark = Colors.Black}.GetBinding(),
+        }
+    }
+}
+```

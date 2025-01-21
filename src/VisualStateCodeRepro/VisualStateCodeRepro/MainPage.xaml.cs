@@ -13,11 +13,20 @@ public partial class MainPage : ContentPage
 
     private void StyleEditor()
     {
-        // Not applicable in this case since we can't set this on a setter & we need 4 colors for the enabled/disabled appearance
-        // CodeEditor.SetAppThemeColor(Editor.TextColorProperty, Colors.Black, Colors.Blue);
-        var normalTheme = CreateAppTheme(Colors.Lime, Colors.Gold);
-        var disabledTheme = CreateAppTheme(Colors.DarkGreen, Color.FromArgb("#CCAC00"));
+        var normalColor = new AppThemeColor()
+        {
+            Default = Colors.Lime,
+            Light = Colors.Lime,
+            Dark = Colors.Gold,
+        };
 
+        var disabledColor = new AppThemeColor()
+        {
+            Default = Colors.DarkGreen,
+            Light = Colors.DarkGreen,
+            Dark = Color.FromArgb("#CCAC00"),
+        };
+        
         VisualStateManager.SetVisualStateGroups(CodeEditor, [
             new VisualStateGroup()
             {
@@ -32,13 +41,11 @@ public partial class MainPage : ContentPage
                             new Setter()
                             {
                                 Property = Editor.TextColorProperty,
-                                //Value = normalTheme, // Works
-                                Value = new AppThemeColor() // Doesnt work
-                                {
-                                    Default = Colors.Lime,
-                                    Light = Colors.Lime,
-                                    Dark = Colors.Gold,
-                                }
+                                Value = normalColor.GetBinding(),
+                            },
+                            new Setter()
+                            {
+                                Value = new AppThemeColor() { Light = Colors.White, Dark = Colors.Black}.GetBinding(),
                             }
                         }
                     },
@@ -50,13 +57,7 @@ public partial class MainPage : ContentPage
                             new Setter()
                             {
                                 Property = Editor.TextColorProperty,
-                                //Value = disabledTheme, // Works
-                                Value = new AppThemeColor() // Doesnt work
-                                {
-                                    Default = Colors.DarkGreen,
-                                    Light = Colors.DarkGreen,
-                                    Dark = Color.FromArgb("#CCAC00"),
-                                }
+                                Value = disabledColor.GetBinding()
                             }
                         }
                     }
