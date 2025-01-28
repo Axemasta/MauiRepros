@@ -7,8 +7,8 @@
     xmlns:viewmodels="clr-namespace:PrismSelectTabRepro.ViewModels"
     Title="{Binding Title}"
     x:DataType="viewmodels:PageBViewModel">
-    <Label
-        HorizontalOptions="Center"
-        Text="Page B"
-        VerticalOptions="Center" />
+    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+        <Label Text="Page B" />
+        <Button Command="{Binding GoToTabCCommand}" Text="Go to tab C" />
+    </VerticalStackLayout>
 </ContentPage>

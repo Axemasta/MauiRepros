@@ -40,7 +40,7 @@ public partial class LandingViewModel(
                 
                 if (SelectTab && SelectedTab is not null)
                 {
-                    tabbed.SelectedTab(SelectedTab);
+                    tabbed.SelectedTab($"NavigationPage|{SelectedTab}");
                 }
             });
             
@@ -52,7 +52,7 @@ public partial class LandingViewModel(
             
             if (SelectTab && SelectedTab is not null)
             {
-                destination += $"?{KnownNavigationParameters.SelectedTab}={SelectedTab}";
+                destination += $"?{KnownNavigationParameters.SelectedTab}=NavigationPage|{SelectedTab}";
             }
 
             nav = await navigationService.NavigateAsync(destination);
@@ -74,7 +74,7 @@ public partial class LandingViewModel(
                 tabbed.CreateTab(tab => tab.AddNavigationPage().AddSegment<PageAViewModel>());
                 tabbed.CreateTab(tab => tab.AddNavigationPage().AddSegment<PageBViewModel>());
                 tabbed.CreateTab(tab => tab.AddNavigationPage().AddSegment<PageCViewModel>());
-                tabbed.SelectTab<PageBViewModel>(); // Comment out and this works!
+                tabbed.SelectedTab("NavigationPage|PageB"); // Comment out and this works!
             })
             .NavigateAsync();
         

@@ -1,3 +1,12 @@
+using CommunityToolkit.Mvvm.Input;
+
 namespace PrismSelectTabRepro.ViewModels;
 
-public class PageBViewModel(INavigationService navigationService) : BaseViewModel(navigationService, "Page B");
+public partial class PageBViewModel(INavigationService navigationService) : BaseViewModel(navigationService, "Page B")
+{
+    [RelayCommand]
+    private async Task GoToTabC()
+    {
+        await navigationService.SelectTabAsync("PageC");
+    }
+}
