@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="GroupHeaderResizingRepro.Pages.AnimalsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:GroupHeaderResizingRepro.Models"
+    xmlns:viewmodels="clr-namespace:GroupHeaderResizingRepro.ViewModels"
+    x:DataType="viewmodels:AnimalsViewModel">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="AnimalCard" x:DataType="models:Animal">
+                <Grid RowDefinitions="*, 1">
+                    <Grid
+                        Padding="10"
+                        ColumnDefinitions="100, *"
+                        RowDefinitions="*, *"
+                        RowSpacing="10">
+                        <Image
+                            Grid.RowSpan="2"
+                            Aspect="AspectFill"
+                            HeightRequest="60"
+                            Source="{Binding ImageUrl}"
+                            WidthRequest="60" />
+                        <Label
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            Text="{Binding Name}" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            FontAttributes="Italic"
+                            Text="{Binding Location}"
+                            VerticalOptions="End" />
+
+
+                    </Grid>
+
+                    <BoxView
+                        Grid.Row="1"
+                        Margin="10,0,0,0"
+                        BackgroundColor="{AppThemeBinding Light=Gray,
+                                                          Dark=LightGray}" />
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+
+        <Grid RowDefinitions="150, *">
+
+            <ContentView
+                Grid.Row="0"
+                Padding="20"
+                BackgroundColor="DodgerBlue">
+                <VerticalStackLayout>
+                    <Label Text="Header Template IsVisible" />
+                    <Switch x:Name="ShowHeaderSwitch" IsToggled="True" />
+                </VerticalStackLayout>
+            </ContentView>
+
+            <CollectionView
+                Grid.Row="1"
+                IsGrouped="true"
+                ItemSizingStrategy="MeasureAllItems"
+                ItemTemplate="{StaticResource AnimalCard}"
+                ItemsSource="{Binding AnimalGroups}">
+                <CollectionView.GroupHeaderTemplate>
+                    <DataTemplate x:DataType="models:AnimalGroup">
+                        <ContentView
+                            Padding="20,5"
+                            BackgroundColor="LightGray"
+                            IsVisible="{Binding Source={x:Reference ShowHeaderSwitch}, Path=IsToggled}">
+                            <!--  These triggers don't work either, the cell never resizes!  -->
+                            <!-- <ContentView.Triggers> -->
+                            <!--  <DataTrigger  -->
+                            <!--  Binding="{Binding Source={x:Reference ShowHeaderSwitch}, Path=IsToggled}"  -->
+                            <!--  TargetType="ContentView"  -->
+                            <!--  Value="False">  -->
+                            <!--         <Setter Property="HeightRequest" Value="100" /> -->
+                            <!--         <Setter Property="BackgroundColor" Value="Red" /> -->
+                            <!--     </DataTrigger> -->
+                            <!-- </ContentView.Triggers> -->
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                Text="{Binding Title}"
+                                TextColor="Black" />
+                        </ContentView>
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
+            </CollectionView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
