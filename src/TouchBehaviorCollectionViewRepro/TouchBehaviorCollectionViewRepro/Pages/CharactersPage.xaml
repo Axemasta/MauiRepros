@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TouchBehaviorCollectionViewRepro.Pages.CharactersPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:models="clr-namespace:TouchBehaviorCollectionViewRepro.Models"
+    xmlns:viewmodels="clr-namespace:TouchBehaviorCollectionViewRepro.ViewModels"
+    x:Name="Page"
+    Title="Characters"
+    x:DataType="viewmodels:CharactersViewModel">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="CharacterTemplate" x:DataType="models:JojoCharacterDisplayItem">
+                <ContentView x:Name="TemplateRoot" Padding="20,10">
+                    <ContentView.Behaviors>
+                        <mct:TouchBehavior
+                            BindingContext="{Binding Source={x:Reference TemplateRoot}, Path=BindingContext, x:DataType=ContentView}"
+                            Command="{Binding BindingContext.CharacterSelectedCommand, Source={x:Reference Page}, x:DataType=ContentPage}"
+                            CommandParameter="{Binding .}"
+                            DefaultBackgroundColor="Transparent"
+                            PressedBackgroundColor="SlateGray" />
+
+                    </ContentView.Behaviors>
+                    <Grid ColumnDefinitions="Auto, *" ColumnSpacing="10">
+                        <BoxView
+                            HeightRequest="50"
+                            WidthRequest="50"
+                            Color="Orange" />
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label FontAttributes="Bold" Text="{Binding Name}" />
+                            <Label FontAttributes="Bold" Text="{Binding Stand}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </ContentView>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="150, *">
+        <ContentView BackgroundColor="Orange" />
+
+        <CollectionView
+            Grid.Row="1"
+            ItemTemplate="{StaticResource CharacterTemplate}"
+            ItemsLayout="VerticalList"
+            ItemsSource="{Binding Characters}"
+            SelectionMode="None" />
+    </Grid>
+</ContentPage>
