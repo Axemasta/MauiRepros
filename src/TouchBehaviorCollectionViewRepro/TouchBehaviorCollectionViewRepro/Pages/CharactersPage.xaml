@@ -37,6 +37,12 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding AddCharacterCommand}" Text="Add Item" />
+        <ToolbarItem Command="{Binding RemoveCharacterCommand}" Text="Remove Item" />
+        <ToolbarItem Command="{Binding RestoreCharacterCommand}" Text="Restore Item" />
+    </ContentPage.ToolbarItems>
+
     <Grid RowDefinitions="150, *">
         <ContentView BackgroundColor="Orange" />
 
