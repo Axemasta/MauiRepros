@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using Maui.TouchEffect.Hosting;
 using Microsoft.Extensions.Logging;
 using TouchBehaviorCollectionViewRepro.ViewModels;
 
@@ -12,6 +13,13 @@ namespace TouchBehaviorCollectionViewRepro
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .UseMauiTouchEffect()
+                .ConfigureMauiHandlers(handlers =>
+                {
+#if IOS || MACCATALYST
+                    handlers.AddHandler<Microsoft.Maui.Controls.CollectionView, Microsoft.Maui.Controls.Handlers.Items2.CollectionViewHandler2>();
+#endif
+                })
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

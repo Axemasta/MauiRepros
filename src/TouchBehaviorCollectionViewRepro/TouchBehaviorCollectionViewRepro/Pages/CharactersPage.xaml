@@ -3,8 +3,10 @@
     x:Class="TouchBehaviorCollectionViewRepro.Pages.CharactersPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:TouchBehaviorCollectionViewRepro"
     xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:models="clr-namespace:TouchBehaviorCollectionViewRepro.Models"
+    xmlns:touch="http://axemasta.com/schemas/2023/toucheffect"
     xmlns:viewmodels="clr-namespace:TouchBehaviorCollectionViewRepro.ViewModels"
     x:Name="Page"
     Title="Characters"
@@ -12,16 +14,34 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <DataTemplate x:Key="CharacterTemplate" x:DataType="models:JojoCharacterDisplayItem">
-                <ContentView x:Name="TemplateRoot" Padding="20,10">
-                    <ContentView.Behaviors>
-                        <mct:TouchBehavior
-                            BindingContext="{Binding Source={x:Reference TemplateRoot}, Path=BindingContext, x:DataType=ContentView}"
-                            Command="{Binding BindingContext.CharacterSelectedCommand, Source={x:Reference Page}, x:DataType=ContentPage}"
-                            CommandParameter="{Binding .}"
-                            DefaultBackgroundColor="Transparent"
-                            PressedBackgroundColor="SlateGray" />
+                <Border
+                    x:Name="TemplateRoot"
+                    Margin="18,9"
+                    Padding="20,10"
+                    BackgroundColor="Coral">
 
-                    </ContentView.Behaviors>
+                    <!--  My TouchEffect port doesn't work whilst using ancestor binding for the Command, this is how I originally discovered the issue  -->
+                    <!--  <Border  -->
+                    <!--  x:Name="TemplateRoot"  -->
+                    <!--  Margin="18,9"  -->
+                    <!--  Padding="20,10"  -->
+                    <!--  touch:TouchEffect.Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CharactersViewModel}}, Path=CharacterSelectedCommand, x:DataType=viewmodels:CharactersViewModel}"  -->
+                    <!--  touch:TouchEffect.CommandParameter="{Binding .}"  -->
+                    <!--  touch:TouchEffect.DefaultBackgroundColor="Coral"  -->
+                    <!--  touch:TouchEffect.PressedBackgroundColor="SlateGray">  -->
+
+                    <!--  MCT Touch Behaviour does work but it cannot use ancestor binding for the Command  -->
+                    <!-- <Border.Behaviors> -->
+                    <!--  <mct:TouchBehavior  -->
+                    <!--  BindingContext="{Binding Source={x:Reference TemplateRoot}, Path=BindingContext, x:DataType=Border}"  -->
+                    <!--  Command="{Binding BindingContext.CharacterSelectedCommand, Source={x:Reference Page}, x:DataType=ContentPage}"  -->
+                    <!--  CommandParameter="{Binding .}"  -->
+                    <!--  DefaultBackgroundColor="Coral"  -->
+                    <!--  PressedBackgroundColor="SlateGray" />  -->
+                    <!-- </Border.Behaviors> -->
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CharactersViewModel}}, Path=CharacterSelectedCommand, x:DataType=viewmodels:CharactersViewModel}" CommandParameter="{Binding .}" />
+                    </Border.GestureRecognizers>
                     <Grid ColumnDefinitions="Auto, *" ColumnSpacing="10">
                         <BoxView
                             HeightRequest="50"
@@ -32,25 +52,43 @@
                             <Label FontAttributes="Bold" Text="{Binding Stand}" />
                         </VerticalStackLayout>
                     </Grid>
-                </ContentView>
+                </Border>
+            </DataTemplate>
+
+            <DataTemplate x:Key="BlankHeader">
+                <ContentView HeightRequest="9" Opacity="0" />
             </DataTemplate>
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding AddCharacterCommand}" Text="Add Item" />
-        <ToolbarItem Command="{Binding RemoveCharacterCommand}" Text="Remove Item" />
-        <ToolbarItem Command="{Binding RestoreCharacterCommand}" Text="Restore Item" />
-    </ContentPage.ToolbarItems>
+    <Grid RowDefinitions="Auto, *">
+        <ContentView Padding="10" BackgroundColor="Orange">
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Order Items" />
+                <Button
+                    Command="{Binding OrderCharactersCommand}"
+                    CommandParameter="{x:Static local:OrderConstants.AlphabeticallyAscending}"
+                    Text="A-Z" />
+                <Button
+                    Command="{Binding OrderCharactersCommand}"
+                    CommandParameter="{x:Static local:OrderConstants.AlphabeticallyDescending}"
+                    Text="Z-A" />
+                <Button
+                    Command="{Binding OrderCharactersCommand}"
+                    CommandParameter="{x:Static local:OrderConstants.Shuffle}"
+                    Text="Shuffle" />
+            </VerticalStackLayout>
+        </ContentView>
 
-    <Grid RowDefinitions="150, *">
-        <ContentView BackgroundColor="Orange" />
-
-        <CollectionView
-            Grid.Row="1"
-            ItemTemplate="{StaticResource CharacterTemplate}"
-            ItemsLayout="VerticalList"
-            ItemsSource="{Binding Characters}"
-            SelectionMode="None" />
+        <ContentView Grid.Row="1" BackgroundColor="LightCoral">
+            <RefreshView>
+                <CollectionView
+                    HeaderTemplate="{StaticResource BlankHeader}"
+                    ItemTemplate="{StaticResource CharacterTemplate}"
+                    ItemsLayout="VerticalList"
+                    ItemsSource="{Binding Characters}"
+                    SelectionMode="None" />
+            </RefreshView>
+        </ContentView>
     </Grid>
 </ContentPage>

@@ -1,194 +1,73 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using System.Collections.ObjectModel;
-using System.Text.Json;
 using TouchBehaviorCollectionViewRepro.Models;
+using TouchBehaviorCollectionViewRepro.ObjectModel;
+using TouchBehaviorCollectionViewRepro.Services;
 
 namespace TouchBehaviorCollectionViewRepro.ViewModels;
 
-public partial class CharactersViewModel(ILogger<CharactersViewModel> logger) : ObservableObject
+public partial class CharactersViewModel : ObservableObject
 {
-    private readonly ILogger logger = logger;
+    private readonly ILogger _logger;
+    private readonly List<JojoCharacterDisplayItem> _unfilteredCharacters;
 
-    public ObservableCollection<JojoCharacterDisplayItem> Characters { get; } = new(CharactersRepository.GetCharacters());
+    public ObservableRangeCollection<JojoCharacterDisplayItem> Characters { get; } = [];
+    
+    public CharactersViewModel(ILogger<CharactersViewModel> logger)
+    {
+        _logger = logger;
+        _unfilteredCharacters = CharactersRepository.GetCharacters();
 
+        Characters.AddRange(_unfilteredCharacters);
+    }
+    
+    
     [RelayCommand]
     private void CharacterSelected(JojoCharacterDisplayItem? characterDisplayItem)
     {
         if (characterDisplayItem is null)
         {
-            logger.LogDebug("Selected character was null...");
+            _logger.LogDebug("Selected character was null...");
             return;
         }
 
         Shell.Current.DisplayAlert(characterDisplayItem.Name, $"{characterDisplayItem.Name} has the stand {characterDisplayItem.Stand}. This stand is of type {characterDisplayItem.StandType} and form {characterDisplayItem.StandForm}", "OK");
     }
 
-    private List<JojoCharacterDisplayItem> moreCharacters = CharactersRepository.GetMoreCharacters();
-
     [RelayCommand]
-    private void AddCharacter()
+    private void OrderCharacters(string orderType)
     {
-        var availableCharacters = moreCharacters
-        .Where(mc => !Characters.Any(ec => ec.Name == mc.Name))
-        .ToList();
-
-        if (availableCharacters.Count == 0)
+        var filteredCharacters = _unfilteredCharacters;
+        
+        switch (orderType)
         {
-            return;
+            case OrderConstants.AlphabeticallyAscending:
+            {
+                filteredCharacters = filteredCharacters
+                    .OrderByDescending(c => c.Name)
+                    .ToList();
+                break;
+            }
+            
+            case OrderConstants.AlphabeticallyDescending:
+            {
+                filteredCharacters = filteredCharacters
+                    .OrderBy(c => c.Name)
+                    .ToList();
+                break;
+            }
+
+            case OrderConstants.Shuffle:
+            {
+                var rnd = Random.Shared;
+                filteredCharacters = filteredCharacters
+                    .OrderBy(_ => rnd.Next())
+                    .ToList();
+                break;
+            }
         }
-
-        var random = new Random();
-        int index = random.Next(availableCharacters.Count);
-        Characters.Add( availableCharacters[index]);
-    }
-
-    private JojoCharacterDisplayItem? lastRemovedCharacter;
-
-    [RelayCommand]
-    private void RemoveCharacter()
-    {
-        var random = new Random();
-        int index = random.Next(Characters.Count);
-        var characterToRemove = Characters[index];
-
-        lastRemovedCharacter = characterToRemove;
-        Characters.Remove(characterToRemove);
-    }
-
-    [RelayCommand]
-    private void RestoreCharacter()
-    {
-        if (lastRemovedCharacter is null)
-        {
-            logger.LogWarning("Last removed character was null, exiting.");
-            return;
-        }
-
-        // Deep clone the character to avoid reference issues
-        var characterJson = JsonSerializer.Serialize(lastRemovedCharacter);
-        var clonedCharacter = JsonSerializer.Deserialize<JojoCharacterDisplayItem>(characterJson);
-
-        if (clonedCharacter is null)
-        {
-            throw new InvalidOperationException($"Unable to deserialize json: {characterJson}");
-        }
-
-        Characters.Add(clonedCharacter);
-        lastRemovedCharacter = null;
-    }
-}
-
-public static class CharactersRepository
-{
-    public static List<JojoCharacterDisplayItem> GetCharacters()
-    {
-        return new List<JojoCharacterDisplayItem>
-        {
-            new JojoCharacterDisplayItem()
-            {
-                Name = "Jotaro Kujo",
-                Stand = "Star Platinum",
-                StandType = StandType.CloseRange,
-                StandForm = StandForm.NaturalHumanoid,
-                IsAlly = true,
-            },
-            new JojoCharacterDisplayItem()
-            {
-                Name = "Jean Pierre Polnareff",
-                Stand = "Silver Chariot",
-                StandType = StandType.CloseRange,
-                StandForm = StandForm.ArtificalHumanoid,
-                IsAlly = true,
-            },
-            new JojoCharacterDisplayItem()
-            {
-                Name = "Mohammed Avdol",
-                Stand = "Magicians Red",
-                StandType = StandType.CloseRange,
-                StandForm = StandForm.NaturalNonHumanoid,
-                IsAlly = true,
-            },
-            new JojoCharacterDisplayItem()
-            {
-                Name = "Joseph Joestar",
-                Stand = "Hermit Purple",
-                StandType = StandType.RangeIrrelevant,
-                StandForm = StandForm.Phenomenon,
-                IsAlly = true,
-            },
-        };
-    }
-
-    public static List<JojoCharacterDisplayItem> GetMoreCharacters()
-    {
-        return new List<JojoCharacterDisplayItem>
-        {
-             new JojoCharacterDisplayItem()
-            {
-                Name = "Noriaki Kakyoin",
-                Stand = "Hierophant Green",
-                StandType = StandType.LongRange,
-                StandForm = StandForm.NaturalNonHumanoid,
-                IsAlly = true,
-            },
-            new JojoCharacterDisplayItem()
-            {
-                Name = "DIO",
-                Stand = "The World",
-                StandType = StandType.CloseRange,
-                StandForm = StandForm.NaturalHumanoid,
-                IsAlly = false,
-            },
-            new JojoCharacterDisplayItem()
-            {
-                Name = "Enrico Pucci",
-                Stand = "Made in Heaven",
-                StandType = StandType.Automatic,
-                StandForm = StandForm.NaturalHumanoid,
-                IsAlly = false,
-            },
-            new JojoCharacterDisplayItem()
-            {
-                Name = "Bruno Bucciarati",
-                Stand = "Sticky Fingers",
-                StandType = StandType.CloseRange,
-                StandForm = StandForm.NaturalHumanoid,
-                IsAlly = true,
-            },
-            new JojoCharacterDisplayItem()
-            {
-                Name = "Guido Mista",
-                Stand = "Sex Pistols",
-                StandType = StandType.LongRange,
-                StandForm = StandForm.ArtificialNonHumanoid,
-                IsAlly = true,
-            },
-            new JojoCharacterDisplayItem()
-            {
-                Name = "Yoshikage Kira",
-                Stand = "Killer Queen",
-                StandType = StandType.CloseRange,
-                StandForm = StandForm.NaturalHumanoid,
-                IsAlly = false,
-            },
-            new JojoCharacterDisplayItem()
-            {
-                Name = "Rohan Kishibe",
-                Stand = "Heaven's Door",
-                StandType = StandType.LongRange,
-                StandForm = StandForm.NaturalHumanoid,
-                IsAlly = true,
-            },
-            new JojoCharacterDisplayItem()
-            {
-                Name = "Giorno Giovanna",
-                Stand = "Gold Experience",
-                StandType = StandType.CloseRange,
-                StandForm = StandForm.NaturalHumanoid,
-                IsAlly = true,
-            },
-        };
+        
+        Characters.ReplaceRange(filteredCharacters);
     }
 }
