@@ -1,6 +1,6 @@
 # CollectionViewHandler2 Binding Issue
 
-[![Maui Issue Status](https://img.shields.io/github/issues/detail/state/dotnet/maui/26620)](https://github.com/dotnet/maui/issues/26620)
+[![Maui Issue Status](https://img.shields.io/github/issues/detail/state/dotnet/maui/31764)](https://github.com/dotnet/maui/issues/31764)
 This project contains a reproduction of a binding issue found when using `CollectionViewHandler2` on iOS.
 
 > This project is called TouchBehaviorCollectionViewRepro because that is how I originally discovered the issue, however the issue is not specific to that behavior and can be reproduced with vanilla maui components, hence why it is raised against the main maui repro.
