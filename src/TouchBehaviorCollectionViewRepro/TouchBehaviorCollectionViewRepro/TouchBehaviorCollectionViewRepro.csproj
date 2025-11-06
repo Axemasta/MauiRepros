@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<LangVersion>preview</LangVersion>
-		<MauiVersion>9.0.110</MauiVersion>
+		<MauiVersion>9.0.120</MauiVersion>
 		<TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
 

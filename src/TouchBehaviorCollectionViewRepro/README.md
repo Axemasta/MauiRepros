@@ -9,7 +9,8 @@ This project contains a reproduction of a binding issue found when using `Collec
 
 After applying ordering to a collection, the data template bindings appear to stop working with respect to commands. The views will work properly upon first laod and execute their commands with the correct parameters, however once the collection gets modified and specifically a view that is already rendered has its place in the collection changed (either moved to another index or removed & readded), the command binding gets unset and the command can no longer execute.
 
-This issue is resolved by switching back to the default CollectionView handler.
+~~This issue is resolved by switching back to the default CollectionView handler.~~
+This issue is now fixed, update to Maui 9.0.120
 
 ## Reproduction Steps
 
