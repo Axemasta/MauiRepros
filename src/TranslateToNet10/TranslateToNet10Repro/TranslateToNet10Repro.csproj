@@ -8,7 +8,6 @@
 		<!-- When targetting net 9 the animations work -->
 <!--		<TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>-->
 		
-
 		<OutputType>Exe</OutputType>
 		<RootNamespace>TranslateToNet10Repro</RootNamespace>
 		<UseMaui>true</UseMaui>

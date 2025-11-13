@@ -1,4 +1,6 @@
-﻿namespace TranslateToNet10Repro.Pages;
+﻿using System.Diagnostics;
+
+namespace TranslateToNet10Repro.Pages;
 
 public partial class MainPage : BaseModalPage
 {
@@ -19,6 +21,7 @@ public partial class MainPage : BaseModalPage
 
 	private void OnFooterButtonClicked(object? sender, EventArgs e)
 	{
+		Debug.WriteLine("OnFooterButtonClicked");
 		if (!FooterView.IsVisible)
 		{
 			Dispatcher.DispatchAsync(ShowFooter);
@@ -36,6 +39,8 @@ public partial class MainPage : BaseModalPage
 			return;
 		}
 		
+		Debug.WriteLine("Showing Footer");
+		
 		if (useAnimations)
 		{
 			var height = FooterView.Measure(FooterView.Width, double.PositiveInfinity).Height;
@@ -51,6 +56,8 @@ public partial class MainPage : BaseModalPage
 		{
 			FooterView.IsVisible = true;
 		}
+		
+		Debug.WriteLine("Footer is now displayed");
 	}
 
 	private async Task HideFooter()
@@ -59,6 +66,8 @@ public partial class MainPage : BaseModalPage
 		{
 			return;
 		}
+		
+		Debug.WriteLine("Hiding Footer");
 
 		if (useAnimations)
 		{
@@ -71,5 +80,7 @@ public partial class MainPage : BaseModalPage
 		}
 		
 		FooterView.IsVisible = false;
+		
+		Debug.WriteLine("Footer is now hidden");
 	}
 }
