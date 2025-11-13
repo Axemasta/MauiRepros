@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:BaseModalPage
+    Title="Repro"
+    x:Class="TranslateToNet10Repro.Pages.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:controls="clr-namespace:TranslateToNet10Repro.Controls"
+    xmlns:pages="clr-namespace:TranslateToNet10Repro.Pages"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Grid BackgroundColor="Orange" Grid.RowDefinitions="*, Auto">
+        <VerticalStackLayout Padding="30,10,30,0" Spacing="25">
+
+            <Button
+                Clicked="OnFooterButtonClicked"
+                HorizontalOptions="Fill"
+                SemanticProperties.Hint="Shows the footer view"
+                Text="Show Footer"
+                x:Name="FooterButton" />
+
+            <Label Text="Click the button below to verify whether the UI is accepting inputs" />
+            <Button x:Name="NetTargetButton" />
+        </VerticalStackLayout>
+
+
+        <controls:FooterView
+            BackgroundColor="LightGray"
+            Grid.Row="1"
+            IsVisible="False"
+            Padding="10"
+            x:Name="FooterView">
+            <controls:FooterView.InnerContent>
+                <Button Text="I am the footer" />
+            </controls:FooterView.InnerContent>
+        </controls:FooterView>
+        <!-- <ContentView Grid.Row="1" Padding="10" BackgroundColor="LightGray" IsVisible="False" x:Name="FooterView">
+            <Button Text="I am the footer"/>
+        </ContentView>-->
+    </Grid>
+
+</pages:BaseModalPage>
