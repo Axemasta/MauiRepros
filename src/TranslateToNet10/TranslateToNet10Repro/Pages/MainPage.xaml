@@ -17,7 +17,8 @@
                 Text="Show Footer"
                 x:Name="FooterButton" />
 
-            <Button Text="I don't do anything" />
+            <Label Text="Click the button below to verify whether the UI is accepting inputs" />
+            <Button x:Name="NetTargetButton" />
         </VerticalStackLayout>
 
 

@@ -6,7 +6,7 @@ namespace TranslateToNet10Repro.Controls;
 [ContentProperty(nameof(InnerContent))]
 public class FooterView : ContentView
 {
-	public static new readonly BindableProperty InnerContentProperty = BindableProperty.Create(
+	public static readonly BindableProperty InnerContentProperty = BindableProperty.Create(
 		nameof(Content),
 		typeof(View),
 		typeof(ContentView),

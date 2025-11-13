@@ -9,6 +9,12 @@ public partial class MainPage : BaseModalPage
 	public MainPage()
 	{
 		InitializeComponent();
+
+#if USE_NET_10
+		NetTargetButton.Text = ".NET 10 (Deadlock)";
+#else
+		NetTargetButton.Text = ".NET 9 (Working)";
+#endif
 	}
 
 	private void OnFooterButtonClicked(object? sender, EventArgs e)
@@ -35,7 +41,11 @@ public partial class MainPage : BaseModalPage
 			var height = FooterView.Measure(FooterView.Width, double.PositiveInfinity).Height;
 			FooterView.TranslationY = height;
 			FooterView.IsVisible = true;
+#if USE_NET_10
 			await FooterView.TranslateToAsync(0, 0, animationDuration, Easing.CubicInOut);
+#else
+			await FooterView.TranslateTo(0, 0, animationDuration, Easing.CubicInOut);
+#endif
 		}
 		else
 		{
@@ -52,7 +62,12 @@ public partial class MainPage : BaseModalPage
 
 		if (useAnimations)
 		{
+			
+#if USE_NET_10
 			await FooterView.TranslateToAsync(0, FooterView.Height, animationDuration, Easing.CubicInOut);
+#else
+			await FooterView.TranslateTo(0, FooterView.Height, animationDuration, Easing.CubicInOut);
+#endif
 		}
 		
 		FooterView.IsVisible = false;

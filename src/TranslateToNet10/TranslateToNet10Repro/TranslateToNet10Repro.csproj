@@ -1,15 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<DefineConstants Condition=" '$(TargetFramework)' != '' And $(TargetFramework.Contains('net10.0')) ">$(DefineConstants);USE_NET_10</DefineConstants>
+		<!-- When targetting net 10 a deadlock occurs -->
 		<TargetFrameworks>net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
 
-		<!-- Note for MacCatalyst:
-		The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
-		When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifier>.
-		The Mac App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
-		either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
-		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
+		<!-- When targetting net 9 the animations work -->
+<!--		<TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>-->
+		
 
 		<OutputType>Exe</OutputType>
 		<RootNamespace>TranslateToNet10Repro</RootNamespace>
@@ -22,7 +20,7 @@
 		<ApplicationTitle>TranslateToNet10Repro</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.translatetonet10repro</ApplicationId>
+		<ApplicationId>com.axemasta.translatetonet10repro</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
