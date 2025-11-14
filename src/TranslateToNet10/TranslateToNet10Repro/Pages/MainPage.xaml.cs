@@ -45,6 +45,7 @@ public partial class MainPage : BaseModalPage
 		{
 			var height = FooterView.Measure(FooterView.Width, double.PositiveInfinity).Height;
 			FooterView.TranslationY = height;
+			FooterView.HeightRequest = height;
 			FooterView.IsVisible = true;
 #if USE_NET_10
 			await FooterView.TranslateToAsync(0, 0, animationDuration, Easing.CubicInOut);

@@ -28,6 +28,7 @@ The footer is displayed onscreen but it completely locks up, all UI becomes unre
 
 #### Workarounds
 
+- Set the height request for the view before it is displayed, thanks [@kubaflo 🐐](https://github.com/kubaflo)
 - Ignore the animation (set `useAnimations=false` in the code behind) and just toggle visibility. This is not ideal since we lose our lovely animations!
 - Uncomment the `ContentView` footer on `MainPage.xaml` and comment the custom control, this animates perfectly.
 
