@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="AndroidSSLRepro.Pages.TestUrlPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodels="clr-namespace:AndroidSSLRepro.ViewModels"
+    Title="Android SSL Repro"
+    x:DataType="viewmodels:TestUrlViewModel">
+    <ContentPage.Content>
+        <ScrollView>
+            <VerticalStackLayout Padding="10,20" Spacing="20">
+
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Url" />
+                    <Entry ClearButtonVisibility="WhileEditing" Text="{Binding Url}" />
+                </VerticalStackLayout>
+
+                <Grid RowDefinitions="Auto, 40" RowSpacing="10">
+                    <Button Command="{Binding VerifyUrlCommand}" Text="Verify Url" />
+                    <ActivityIndicator Grid.Row="1" IsRunning="{Binding VerifyingUrl}" />
+                </Grid>
+
+                <ContentView IsVisible="{Binding ShowSuccess}">
+
+                    <Label FontSize="24" VerticalOptions="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span FontSize="24" TextColor="Green">✓</Span>
+                                <Span FontSize="16">URL is reachable</Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </ContentView>
+
+                <VerticalStackLayout IsVisible="{Binding ShowFailure}" Spacing="10">
+
+                    <Label FontSize="24" VerticalOptions="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span FontSize="24" TextColor="Red">❌</Span>
+                                <Span FontSize="16">Verification failed:</Span>
+                                <Span FontSize="16" Text="{Binding VerificationResult.StatusCode, FallbackValue='0'}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Border
+                        Padding="10"
+                        BackgroundColor="LightGray"
+                        StrokeShape="RoundRectangle 10"
+                        StrokeThickness="0">
+                        <Label Text="{Binding VerificationResult.Exception, FallbackValue='?'}" />
+                    </Border>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
