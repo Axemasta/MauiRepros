@@ -34,13 +34,13 @@ public partial class MainPage : ContentPage
                 CallbackUrl = new Uri("myapp://"),
             });
             
-            await DisplayAlert("Login successful", $"You are now logged in.", "OK");
+            await DisplayAlertAsync("Login successful", $"You are now logged in.", "OK");
         }
         catch (TaskCanceledException)
         {
             // await Task.Delay(TimeSpan.FromSeconds(2));
             
-            await DisplayAlert("Login cancelled", $"You login was cancelled", "OK");
+            await DisplayAlertAsync("Login cancelled", $"You login was cancelled", "OK");
         }
         finally
         {
