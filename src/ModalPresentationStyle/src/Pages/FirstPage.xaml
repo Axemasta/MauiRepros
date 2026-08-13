@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="ModalPresentationIssue.Pages.FirstPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Modal Presentation Style Issue">
+    <ContentPage.Content>
+        <VerticalStackLayout
+            HorizontalOptions="Center"
+            Spacing="20"
+            VerticalOptions="Center">
+            <Button
+                Clicked="OnShowModalPage"
+                HorizontalOptions="Center"
+                Text="Show Modal Page" />
+
+            <Button
+                Clicked="OnShowModalNavPage"
+                HorizontalOptions="Center"
+                Text="Show Modal Navigation Page" />
+
+            <Button
+                Clicked="OnShowModalNavPageWorkaround"
+                HorizontalOptions="Center"
+                Text="Show Navigation Workaround" />
+        </VerticalStackLayout>
+    </ContentPage.Content>
+</ContentPage>
